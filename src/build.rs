@@ -15,6 +15,7 @@ use tenjin::Tenjin;
 use toml;
 use util::{InjectDate, cd2root, load_config, build_tenjin, cpr};
 
+
 const DEFAULT_RECENTS: usize = 5;
 const DEFAULT_DATE_FORMAT: &'static str = "%d %B, %Y";
 
@@ -114,6 +115,9 @@ fn build() -> Result<()> {
     if out.is_dir() {
         for child in fs::read_dir(out)? {
             let child = child?;
+            if child.file_name().to_str().unwrap().starts_with("."){
+                continue;
+            }
             if child.file_type()?.is_dir() {
                 fs::remove_dir_all(&child.path())?;
             } else {
